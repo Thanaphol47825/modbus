@@ -32,6 +32,10 @@ function Navbar(props) {
   const [username, setUsername] = React.useState(
     localStorage.getItem("username")
   );
+
+  // React.useEffect(()=>{
+  //   setUsername(localStorage.getItem("username"))
+  // })
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -74,15 +78,15 @@ function Navbar(props) {
       </List>
       <Divider />
       <List sx={{ display: username != "" ? "none" : "flex" }}>
-        <ListItem
-          key={"login"}
-          disablePadding
-          sx={{ display: "flex" }}
-          
-        >
-          <ListItemButton sx={{ textAlign: "center", display: "flex" }} color="primary" component={Link} to='/login'>
+        <ListItem key={"login"} disablePadding sx={{ display: "flex" }}>
+          <ListItemButton
+            sx={{ textAlign: "center", display: "flex" }}
+            color="primary"
+            component={Link}
+            to="/login"
+          >
             <ListItemText
-              primary="Login"
+              primary="เข้าสู่ระบบ"
               color="primary"
               sx={{ color: "#000" }}
             />
@@ -92,11 +96,11 @@ function Navbar(props) {
       <List sx={{ display: username == "" ? "none" : "flex" }}>
         <ListItem key="logout" disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText
-                primary="Logout"
-                sx={{ color: "#000" }}
-                onClick={logout}
-              />
+            <ListItemText
+              primary="ออกจากระบบ"
+              sx={{ color: "#000" }}
+              onClick={logout}
+            />
           </ListItemButton>
         </ListItem>
       </List>
@@ -127,25 +131,39 @@ function Navbar(props) {
             MUI
             <Box sx={{ display: { xs: "none", sm: "inline" } }}>
               {navItems.map((item, index) => (
-                <Link to={item.url}>
-                  <Button key={index} sx={{ color: "#fff" }} color="primary">
-                    {item.title}
-                  </Button>
-                </Link>
+                <Button
+                  key={index}
+                  sx={{ color: "#fff" }}
+                  color="primary"
+                  component={Link}
+                  to={item.url}
+                >
+                  {item.title}
+                </Button>
               ))}
             </Box>
           </Typography>
 
-          <Box sx={{ display: username !=""? { xs: "none", sm: "block" } : 'none' }}>
+          <Box
+            sx={{
+              display: username != "" ? { xs: "none", sm: "block" } : "none",
+            }}
+          >
             <Typography variant="p" component="span" sx={{ flexGrow: 1 }}>
               {localStorage.getItem("name")} {localStorage.getItem("surname")}
-              </Typography>
-              <Button sx={{ color: "#fff" }} onClick={logout}>Logout</Button>
+            </Typography>
+            <Button sx={{ color: "#fff" }} onClick={logout}>
+              ออกจากระบบ
+            </Button>
           </Box>
-          <Box sx={{ display: username ==""? { xs: "none", sm: "block" } : 'none' }}>
-            <Link to="/login">
-              <Button sx={{ color: "#fff" }}>Login</Button>
-            </Link>
+          <Box
+            sx={{
+              display: username == "" ? { xs: "none", sm: "block" } : "none",
+            }}
+            component={Link}
+            to="/login"
+          >
+            <Button sx={{ color: "#fff" }}>เข้าสู่ระบบ</Button>
           </Box>
         </Toolbar>
       </AppBar>
