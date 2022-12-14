@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_URL = "https://api.modbus.sleepyboi.space/api/auth/";
+// const API_URL = "https://api.modbus.sleepyboi.space/api/auth/";
 
-// const API_URL = "http://localhost:8080/api/auth/";
+const API_URL = "http://localhost:8080/api/auth/";
 
 const headers = {
   "Content-Type": "application/json",
@@ -10,19 +10,20 @@ const headers = {
 };
 
 export async function LoginService(username, password) {
-  try {
-    console.log(username, password)
-    const res = await axios.post(
-      API_URL + "signin",
-      {
-        username: username,
-        password: password,
-      },
-      // headers
-    );
-    console.log(res);
-    return res;
-  } catch (err) {
-    return [];
-  }
+  return axios.post(API_URL + "signin", {
+    username: username,
+    password: password,
+  })
 }
+
+export async function RegisterService(username, password, name, surname ,email , mobile ) {
+  return axios.post(API_URL + "signup", {
+    username: username,
+    password: password,
+    name: name,
+    surname: surname,
+    email: email,
+    mobile: mobile,
+  })
+}
+

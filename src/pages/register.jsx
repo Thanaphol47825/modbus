@@ -60,7 +60,6 @@ const Register = () => {
       values.password
     )
       .then((res) => {
-        console.log(res)
         if (res.data.status) {
           localStorage.clear();
           localStorage.setItem("accessToken", res.data.accessToken);
