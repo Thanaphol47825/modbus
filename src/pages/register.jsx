@@ -1,146 +1,243 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-// import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import InputMask from "react-input-mask";
+
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
+
+import { object, string, boolean } from "yup";
+import { Field, Form, Formik } from "formik";
 
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { RegisterService } from "../services/authService";
+const MySwal = withReactContent(Swal);
 
-export default function Register() {
-  const [username , setUsername] = React.useState("");
-  const [firstName , setFirstName] = React.useState("");
-  const [lastName , setLastName] = React.useState("");
-  const [email , setEmail] = React.useState("");
-  const [mobile , setMobile] = React.useState("");
-  const [password , setPassword] = React.useState("");
+const initialValues = {
+  username: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  mobile: "",
+  password: "",
+};
+const phoneRegex = /^0[0-9]{9}$/;
+const validation = object({
+  username: string().required("กรุณากรอกชื่อผู้ใช้งาน"),
+  firstName: string().required("กรุณากรอกชื่อ"),
+  lastName: string().required("กรุณากรอกนามสกุล"),
+  email: string()
+    .required("กรุณากรอกอีเมล์")
+    .email("กรุณากรอกอีเมล์ให้ถูกต้อง"),
+  mobile: string()
+    .required("กรุณากรอกเบอร์โทรศัพท์")
+    .max(10, "กรุณากรอกเบอร์โทรศัพท์ให้ครบ")
+    .min(10, "กรุณากรอกเบอร์โทรศัพท์ให้ครบ")
+    .matches(phoneRegex, "กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง"),
+  password: string()
+    .min(8, "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร")
+    .required("กรุณากรอกรหัสผ่าน"),
+});
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    var username = data.get("username");
-    var firstName = data.get("firstName");
-    var lastName = data.get("lastName");
-    var email = data.get("email");
-    var mobile = data.get("mobile");
-    var password = data.get("password");
-
-    console.log({
-      username,
-      firstName,
-      lastName,
-      email,
-      mobile,
-      password,
-    });
+const Register = () => {
+  const handleSubmit = (values) => {
+    RegisterService(
+      values.username,
+      values.firstName,
+      values.lastName,
+      values.email,
+      values.mobile,
+      values.password
+    )
+      .then((res) => {
+        console.log(res)
+        if (res.data.status) {
+          localStorage.clear();
+          localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("name", res.data.name);
+          localStorage.setItem("surname", res.data.surname);
+          localStorage.setItem("username", res.data.username);
+          MySwal.fire({
+            icon: "success",
+            title: "สมัครสมาชิกสำเร็จ",
+            text: "",
+          }).then(() => {
+            window.location.href = "/";
+          });
+        } else{
+          MySwal.fire({
+            icon: "error",
+            title: "สมัครสมาชิกไม่สำเร็จ",
+            text: res.data.message,
+          });
+        }
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+      });
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={validation}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                name="username"
-                required
-                fullWidth
-                id="username"
-                label="ชื่อผู้ใช้งาน"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="firstName"
-                required
-                fullWidth
-                id="firstName"
-                label="ชื่อจริง"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="นามสกุล"
-                name="lastName"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="อีเมล"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <InputMask mask="999-999-9999" disabled={false} maskChar=" ">
-                {() => (
-                  <TextField
-                    required
-                    fullWidth
-                    id="mobile"
-                    label="เบอร์โทรศัพท์"
-                    name="mobile"
-                    autoComplete="mobile"
-                  />
-                )}
-              </InputMask>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="รหัสผ่าน"
-                type="password"
-                id="password"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link to="/login">มีบัญชีอยู่แล้ว? ลงชื่อเข้าใช้</Link>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
+        {({ errors, isValid, touched, dirty }) => (
+          <Form>
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign up
+              </Typography>
+              <Box sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={12}>
+                    <Field
+                      as={TextField}
+                      name="username"
+                      required
+                      fullWidth
+                      id="username"
+                      label="ชื่อผู้ใช้งาน"
+                      autoComplete="email"
+                      autoFocus
+                      error={
+                        Boolean(errors.username) && Boolean(touched.username)
+                      }
+                      helperText={
+                        (Boolean(touched.username) && errors.username) || " "
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      as={TextField}
+                      autoComplete="given-name"
+                      name="firstName"
+                      required
+                      fullWidth
+                      id="firstName"
+                      label="ชื่อจริง"
+                      error={
+                        Boolean(errors.firstName) && Boolean(touched.firstName)
+                      }
+                      helperText={
+                        (Boolean(touched.firstName) && errors.firstName) || " "
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      as={TextField}
+                      required
+                      fullWidth
+                      id="lastName"
+                      label="นามสกุล"
+                      name="lastName"
+                      error={
+                        Boolean(errors.lastName) && Boolean(touched.lastName)
+                      }
+                      helperText={
+                        (Boolean(touched.lastName) && errors.lastName) || " "
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field
+                      as={TextField}
+                      required
+                      fullWidth
+                      id="email"
+                      label="อีเมล"
+                      name="email"
+                      autoComplete="email"
+                      error={Boolean(errors.email) && Boolean(touched.email)}
+                      helperText={
+                        (Boolean(touched.email) && errors.email) || " "
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field
+                      as={TextField}
+                      required
+                      fullWidth
+                      id="mobile"
+                      label="เบอร์โทรศัพท์"
+                      name="mobile"
+                      autoComplete="mobile"
+                      inputProps={{ maxLength: 10 }}
+                      type="tel"
+                      error={Boolean(errors.mobile) && Boolean(touched.mobile)}
+                      helperText={
+                        (Boolean(touched.mobile) && errors.mobile) || " "
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field
+                      as={TextField}
+                      required
+                      fullWidth
+                      name="password"
+                      label="รหัสผ่าน"
+                      type="password"
+                      id="password"
+                      error={
+                        Boolean(errors.password) && Boolean(touched.password)
+                      }
+                      helperText={
+                        (Boolean(touched.password) && errors.password) || " "
+                      }
+                    />
+                  </Grid>
+                </Grid>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign Up
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <Link to="/login">มีบัญชีอยู่แล้ว? ลงชื่อเข้าใช้</Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          </Form>
+        )}
+      </Formik>
     </Container>
   );
-}
+};
+
+export default Register;
