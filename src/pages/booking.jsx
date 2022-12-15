@@ -71,9 +71,7 @@ const Booking = () => {
     return completedSteps() === totalSteps();
   };
   const submitFunction = () => {
-    // console.log("submit");
     BookingService(selectroute).then((res) => {
-      console.log(res);
       if (res.data.status) {
         MySwal.fire({
           title: "จองเสร็จสิ้น",
@@ -93,7 +91,6 @@ const Booking = () => {
     });
   };
   const handleNext = async () => {
-    console.log(selectroute);
     if (activeStep === 0) {
       routelistupdate();
     }

@@ -31,7 +31,6 @@ const BookingHistory = () => {
   const [allround, setAllround] = React.useState([]);
   useEffect(() => {
     GetBookingService().then((result) => {
-      console.log(result.data);
       setAllround(result.data);
     });
   }, []);

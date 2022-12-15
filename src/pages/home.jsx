@@ -20,7 +20,6 @@ function Home() {
   const [allround, setAllround] = React.useState([]);
   React.useEffect(() => {
     GetTodayRoundService().then((result) => {
-      console.log(result.data);
       setAllround(result.data);
     });
   }, []);

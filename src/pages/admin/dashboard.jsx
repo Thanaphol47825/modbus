@@ -125,12 +125,10 @@ export const Dashboard = () => {
         setLastweekbooking(res.data.lastweek_booking);
       })
       .catch((err) => {
-        console.log(err);
       });
 
     GetAdminDashboardGraphService()
       .then((res) => {
-        console.log(res.data);
         // use this data to set the graph
         let data = {
           labels: [],
@@ -175,7 +173,6 @@ export const Dashboard = () => {
         setDataset2(data2);
       })
       .catch((err) => {
-        console.log(err);
       });
   }, []);
 

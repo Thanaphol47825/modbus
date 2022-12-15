@@ -9,7 +9,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 
-import { Location } from "../../data/location";
 
 import { object, string, boolean } from "yup";
 import { Field, Form, Formik } from "formik";
@@ -32,6 +31,25 @@ import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 
 const MySwal = withReactContent(Swal);
 
+export const Location = [
+  {
+      id: 1,
+      name: "KMUTT"
+  },
+  {
+      id: 2,
+      name: "KX"
+  },
+  {
+      id: 3,
+      name: "ราชบุรี"
+  },
+  {
+      id: 4,
+      name: "บางขุนเทียน"
+  },
+]
+
 const AddPath = () => {
   const [bus, setBus] = React.useState([]);
   const [bus_id, setBus_id] = React.useState("");
@@ -40,7 +58,6 @@ const AddPath = () => {
   const [date, setDate] = React.useState(new Date());
   React.useEffect(() => {
     GetAllBusService().then((result) => {
-      console.log(result);
       setBus(result.data);
     });
   }, []);
