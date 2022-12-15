@@ -19,9 +19,10 @@ import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = [
-  { title: "Home", url: "/home" },
-  { title: "About", url: "/about" },
-  { title: "Contact", url: "/contact" },
+  { title: "หน้าแรก", url: "/" },
+  { title: "จองรอบ", url: "/booking" },
+  { title: "ประวัติการจอง", url: "/history" },
+  { title: "แอดมิน", url: "/admin/dashboard" },
 ];
 
 function Navbar(props) {
@@ -30,7 +31,7 @@ function Navbar(props) {
   // get username from local storage
   // const username = localStorage.getItem("username");
   const [username, setUsername] = React.useState(
-    localStorage.getItem("username")
+    localStorage.getItem("username") ? localStorage.getItem("username") : ""
   );
 
   // React.useEffect(()=>{

@@ -6,17 +6,24 @@ const API_URL = "http://localhost:8080/api/auth/";
 
 const headers = {
   "Content-Type": "application/json",
-  "access-token": localStorage.getItem("access-token"),
+  "access-token": localStorage.getItem("accessToken"),
 };
 
 export async function LoginService(username, password) {
   return axios.post(API_URL + "signin", {
     username: username,
     password: password,
-  })
+  });
 }
 
-export async function RegisterService(username, password, name, surname ,email , mobile ) {
+export async function RegisterService(
+  username,
+  password,
+  name,
+  surname,
+  email,
+  mobile
+) {
   return axios.post(API_URL + "signup", {
     username: username,
     password: password,
@@ -24,6 +31,6 @@ export async function RegisterService(username, password, name, surname ,email ,
     surname: surname,
     email: email,
     mobile: mobile,
-  })
+  });
 }
 
