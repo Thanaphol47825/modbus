@@ -49,9 +49,9 @@ function Home() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allround.map((round) => {
+              {allround.map((round, index) => {
                 return (
-                  <TableRow>
+                  <TableRow key={index}>
                     <TableCell align="center">
                       {round.location_start_name.name}
                     </TableCell>

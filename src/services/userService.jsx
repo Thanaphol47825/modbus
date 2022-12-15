@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_URL = "https://api.modbus.sleepyboi.space/api/";
+// const API_URL = "https://api.modbus.sleepyboi.space/api/";
 
-// const API_URL = "http://localhost:8080/api/";
+const API_URL = "http://localhost:8080/api/";
 
 const header = {
   "Content-Type": "application/json",
@@ -82,4 +82,24 @@ export async function GetAdminDashboardService() {
 
 export async function GetAdminDashboardGraphService() {
   return axios.get(API_URL + "get/admin/dashboard/graph", { headers: header });
+}
+
+export async function GetAllUserService() {
+  return axios.get(API_URL + "get/admin/user", { headers: header });
+}
+
+export async function DeleteAccount(user_id) {
+  return axios.post(
+    API_URL + "delete/user/" + user_id,
+    {},
+    { headers: header }
+  );
+}
+
+export async function ChangePermission(user_id, role) {
+  return axios.post(
+    API_URL + "update/permission/" + user_id,
+    { role: role },
+    { headers: header }
+  );
 }

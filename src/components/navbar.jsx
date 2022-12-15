@@ -51,7 +51,7 @@ function Navbar(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        MODBUS
       </Typography>
       <Divider />
 
@@ -129,7 +129,7 @@ function Navbar(props) {
             component="span"
             sx={{ flexGrow: 1, display: { xs: "block", sm: "block" } }}
           >
-            MUI
+            MODBUS
             <Box sx={{ display: { xs: "none", sm: "inline" } }}>
               {navItems.map((item, index) => (
                 <Button
