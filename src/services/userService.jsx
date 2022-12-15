@@ -47,21 +47,39 @@ export async function GetTodayRoundService() {
 }
 
 export async function GetBookingService() {
-  return axios.get(API_URL + "get/booking", {headers: header});
+  return axios.get(API_URL + "get/booking", { headers: header });
+}
+
+export async function GetBusTypeService() {
+  return axios.get(API_URL + "get/bus/type");
+}
+
+export async function AddBusService(bus_id, bus_type) {
+  return axios.post(
+    API_URL + "create/bus",
+    {
+      bus_type: bus_type,
+      bus_id: bus_id,
+    },
+    { headers: header }
+  );
 }
 
 // CancelBookingService
 export async function CancelBookingService(booking_id) {
-  return axios.post(API_URL + "cancel/booking/" + booking_id, {}, {headers: header})
+  return axios.post(
+    API_URL + "cancel/booking/" + booking_id,
+    {},
+    { headers: header }
+  );
 }
 
-
-// admin service 
+// admin service
 
 export async function GetAdminDashboardService() {
-  return axios.get(API_URL + "get/admin/dashboard", {headers: header})
+  return axios.get(API_URL + "get/admin/dashboard", { headers: header });
 }
 
 export async function GetAdminDashboardGraphService() {
-  return axios.get(API_URL + "get/admin/dashboard/graph", {headers: header})
+  return axios.get(API_URL + "get/admin/dashboard/graph", { headers: header });
 }
