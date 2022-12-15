@@ -17,7 +17,6 @@ export async function GetRoute(location_start, location_end) {
 }
 
 export async function BookingService(round_id) {
-  console.log(header);
   return axios.post(API_URL + "booking/" + round_id, {}, { headers: header });
 }
 
