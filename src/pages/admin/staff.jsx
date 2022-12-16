@@ -41,7 +41,6 @@ const StaffManage = () => {
   useEffect(() => {
     GetAllUserService()
       .then((result) => {
-        console.log(result.data);
         setUserList(result.data);
       })
       .catch((err) => {});
@@ -115,7 +114,7 @@ const StaffManage = () => {
                                     "เปลี่ยนสิทธิ์ผู้ใช้สำเร็จ",
                                     "success"
                                   );
-                                  window.location.reload();
+                                  location.reload();
                                 });
                               }
                             });
@@ -146,7 +145,7 @@ const StaffManage = () => {
                                       icon: "success",
                                       timer: 2000,
                                     }).then(() => {
-                                      window.location.reload();
+                                      location.reload();
                                     });
                                   })
                                   .catch((err) => {

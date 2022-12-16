@@ -17,7 +17,7 @@ import {
 import { object, string, boolean } from "yup";
 import { Field, Form, Formik } from "formik";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { RegisterService } from "../services/authService";
@@ -50,6 +50,7 @@ const validation = object({
 });
 
 const Register = () => {
+  const navigate = useNavigate();
   const handleSubmit = (values) => {
     RegisterService(
       values.username,
@@ -71,7 +72,7 @@ const Register = () => {
             title: "สมัครสมาชิกสำเร็จ",
             text: "",
           }).then(() => {
-            window.location.href = "/";
+            navigate("/")
           });
         } else{
           MySwal.fire({

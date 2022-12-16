@@ -96,7 +96,7 @@ const AddPath = () => {
         />
         <CardContent>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12} lg={6}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">ต้นทาง</InputLabel>
                 <Select
@@ -123,7 +123,7 @@ const AddPath = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} lg={6}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">ปลายทาง</InputLabel>
                 <Select
@@ -150,7 +150,7 @@ const AddPath = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} lg={6}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">รถ</InputLabel>
                 <Select
@@ -173,7 +173,7 @@ const AddPath = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} lg={6}>
               <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DateTimePicker

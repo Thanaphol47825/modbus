@@ -25,11 +25,13 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import BusAlertIcon from "@mui/icons-material/BusAlert";
 import { BookingService, GetRoute } from "../services/userService";
+import { useNavigate } from "react-router-dom";
 const MySwal = withReactContent(Swal);
 
 const steps = ["เลือกเส้นทาง", "เลือกรอบการเดินรถ", "ตรวจสอบข้อมูล"];
 
 const Booking = () => {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
   const Locations = [
@@ -78,7 +80,7 @@ const Booking = () => {
           icon: "success",
           confirmButtonText: "ตกลง",
         }).then(() => {
-          window.location.href = "/";
+          navigate("/")
         });
       } else {
         MySwal.fire({

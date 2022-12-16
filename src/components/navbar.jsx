@@ -18,25 +18,38 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = [
-  { title: "หน้าแรก", url: "/" },
-  { title: "จองรอบ", url: "/booking" },
-  { title: "ประวัติการจอง", url: "/history" },
-  { title: "แอดมิน", url: "/admin/dashboard" },
-];
 
 function Navbar(props) {
+  const [navItems, setNavItems] = React.useState([
+    { title: "หน้าแรก", url: "/" },
+    { title: "จองรอบ", url: "/booking" },
+    { title: "ประวัติการจอง", url: "/history" },
+    { title: "แอดมิน", url: "/admin/dashboard" },
+  ]);
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   // get username from local storage
   // const username = localStorage.getItem("username");
-  const [username, setUsername] = React.useState(
-    localStorage.getItem("username") ? localStorage.getItem("username") : ""
-  );
+  const [username, setUsername] = React.useState("");
 
-  // React.useEffect(()=>{
-  //   setUsername(localStorage.getItem("username"))
-  // })
+  React.useEffect(() => {
+    setUsername(localStorage.getItem("username") || "");
+  }, []);
+  React.useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      setNavItems([{ title: "หน้าแรก", url: "/" }]);
+    } else {
+      if (localStorage.getItem("role") === "1") {
+        setNavItems([
+          { title: "หน้าแรก", url: "/" },
+          { title: "จองรอบ", url: "/booking" },
+          { title: "ประวัติการจอง", url: "/history" },
+          { title: "แอดมิน", url: "/admin/dashboard" },
+        ]);
+      }
+    }
+  }, []);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -45,7 +58,10 @@ function Navbar(props) {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("name");
     localStorage.removeItem("surname");
+    localStorage.removeItem("role");
     setUsername("");
+    // reload page
+    location.reload();
   };
 
   const drawer = (

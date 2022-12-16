@@ -26,7 +26,6 @@ const AddBus = () => {
   const [bustype, setBustype] = React.useState([]);
   useEffect(() => {
     GetBusTypeService().then((result) => {
-      console.log(result.data);
       setBustype(result.data);
     });
   }, []);
@@ -69,7 +68,7 @@ const AddBus = () => {
             {({ isSubmitting, errors, touched }) => (
               <Form>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} lg={6}>
                     <Field
                       as={TextField}
                       name="bus_id"
@@ -83,7 +82,7 @@ const AddBus = () => {
                       }
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} lg={6}>
                     <FormControl fullWidth required>
                       <InputLabel>ประเภทรถ</InputLabel>
                       <Field

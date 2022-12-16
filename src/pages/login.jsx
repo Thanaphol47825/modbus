@@ -11,7 +11,7 @@ import {
   Typography,
   Container,
 } from "@mui/material";
-import { object, string ,boolean} from "yup";
+import { object, string, boolean } from "yup";
 import { Field, Form, Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -31,15 +31,16 @@ const initialValues = {
 
 const validation = object({
   email: string()
-  .required("กรุณากรอกชื่อผู้ใช้งาน").default(localStorage.getItem("email")).nullable(),
+    .required("กรุณากรอกชื่อผู้ใช้งาน")
+    .default(localStorage.getItem("email"))
+    .nullable(),
   password: string()
     .required("กรุณากรอกรหัสผ่าน")
     .min(8, "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร")
-    .default(localStorage.getItem("password")).nullable(),
+    .default(localStorage.getItem("password"))
+    .nullable(),
   remember: boolean().default(localStorage.getItem("remember")),
 });
-
-
 
 const LoginForm = () => {
   const handleSubmit = (values, { resetForm, isSubmitting }) => {
@@ -47,7 +48,7 @@ const LoginForm = () => {
       .then((res) => {
         if (res.data.status) {
           localStorage.clear();
-          if(values.remember){
+          if (values.remember) {
             localStorage.setItem("remember", true);
             localStorage.setItem("email", values.email);
             localStorage.setItem("password", values.password);
@@ -56,13 +57,14 @@ const LoginForm = () => {
           localStorage.setItem("name", res.data.name);
           localStorage.setItem("surname", res.data.surname);
           localStorage.setItem("username", res.data.username);
-  
+          localStorage.setItem("role", res.data.role);
+
           MySwal.fire({
             title: "Success",
             text: "Login Success",
             icon: "success",
           }).then(() => {
-            window.location.href("/");
+            location.reload();
           });
         } else {
           MySwal.fire({
@@ -82,6 +84,13 @@ const LoginForm = () => {
         resetForm();
       });
   };
+  // if logged in redirect to home
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      navigate("/");
+    }
+  }, []);
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -140,7 +149,8 @@ const LoginForm = () => {
                 />
                 <FormControlLabel
                   control={
-                    <Field as={Checkbox}
+                    <Field
+                      as={Checkbox}
                       value="remember"
                       color="primary"
                       name="remember"

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
   Link,
+  useNavigate,
 } from "react-router-dom";
 import Dashboard from "./dashboard";
 import { Box, Button, Container, Grid } from "@mui/material";
@@ -13,6 +14,12 @@ import AddBus from "./addbus";
 import StaffManage from "./staff";
 
 const Admin = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem("role") !== "1") {
+      navigate("/");
+    }
+  }, []);
   return (
     <Box>
       <Container>

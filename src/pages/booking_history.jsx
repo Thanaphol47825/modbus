@@ -106,7 +106,7 @@ const BookingHistory = () => {
                                     showConfirmButton: false,
                                     timer: 1500,
                                   }).then(() => {
-                                    window.location.reload();
+                                    location.reload();
                                   });
                                 } else {
                                   MySwal.fire({
