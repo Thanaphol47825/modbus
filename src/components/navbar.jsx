@@ -1,68 +1,123 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-// import Link from "@mui/material/Link";
-
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  Link,
-} from "react-router-dom";
+  AppBar,
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Button,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = ["Home", "About", "Contact"];
 
 function Navbar(props) {
+  const [navItems, setNavItems] = React.useState([
+    { title: "หน้าแรก", url: "/" },
+    { title: "จองรอบ", url: "/booking" },
+    { title: "ประวัติการจอง", url: "/history" },
+    { title: "แอดมิน", url: "/admin/dashboard" },
+  ]);
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  // get username from local storage
+  // const username = localStorage.getItem("username");
+  const [username, setUsername] = React.useState("");
 
+  React.useEffect(() => {
+    setUsername(localStorage.getItem("username") || "");
+  }, []);
+  React.useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      setNavItems([{ title: "หน้าแรก", url: "/" }]);
+    } else {
+      if (localStorage.getItem("role") === "1") {
+        setNavItems([
+          { title: "หน้าแรก", url: "/" },
+          { title: "จองรอบ", url: "/booking" },
+          { title: "ประวัติการจอง", url: "/history" },
+          { title: "แอดมิน", url: "/admin/dashboard" },
+        ]);
+      }
+    }
+  }, []);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+  const logout = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("name");
+    localStorage.removeItem("surname");
+    localStorage.removeItem("role");
+    setUsername("");
+    // reload page
+    location.reload();
   };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        MODBUS
       </Typography>
       <Divider />
 
       <List>
-        {navItems.map((item) => (
-          <ListItem key={`/${item.toLowerCase()}`} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }} color="primary">
-              <Link to={`/${item.toLowerCase()}`}>
-                <ListItemText
-                  primary={item}
-                  color="primary"
-                  sx={{ color: "#000" }}
-                />
-              </Link>
+        {navItems.map((item, index) => (
+          <ListItem
+            key={index}
+            disablePadding
+            sx={{ display: "flex" }}
+            component={Link}
+            to={item.url}
+          >
+            <ListItemButton
+              sx={{ textAlign: "center", display: "flex" }}
+              color="primary"
+            >
+              <ListItemText
+                primary={item.title}
+                color="primary"
+                sx={{ color: "#000" }}
+              />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
       <Divider />
-      <List>
-        <ListItem disablePadding>
+      <List sx={{ display: username != "" ? "none" : "flex" }}>
+        <ListItem key={"login"} disablePadding sx={{ display: "flex" }}>
+          <ListItemButton
+            sx={{ textAlign: "center", display: "flex" }}
+            color="primary"
+            component={Link}
+            to="/login"
+          >
+            <ListItemText
+              primary="เข้าสู่ระบบ"
+              color="primary"
+              sx={{ color: "#000" }}
+            />
+          </ListItemButton>
+        </ListItem>
+      </List>
+      <List sx={{ display: username == "" ? "none" : "flex" }}>
+        <ListItem key="logout" disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
-            <Link to="/login">
-              <ListItemText primary="Login" sx={{ color: "#000" }} />
-            </Link>
+            <ListItemText
+              primary="ออกจากระบบ"
+              sx={{ color: "#000" }}
+              onClick={logout}
+            />
           </ListItemButton>
         </ListItem>
       </List>
@@ -90,28 +145,42 @@ function Navbar(props) {
             component="span"
             sx={{ flexGrow: 1, display: { xs: "block", sm: "block" } }}
           >
-            MUI
+            MODBUS
             <Box sx={{ display: { xs: "none", sm: "inline" } }}>
-              {navItems.map((item) => (
-                <Link to={`/${item.toLowerCase()}`}>
-                  <Button
-                    key={`/${item.toUpperCase()}`}
-                    sx={{ color: "#fff" }}
-                    color="primary"
-                  >
-                    {item}
-                  </Button>
-                </Link>
+              {navItems.map((item, index) => (
+                <Button
+                  key={index}
+                  sx={{ color: "#fff" }}
+                  color="primary"
+                  component={Link}
+                  to={item.url}
+                >
+                  {item.title}
+                </Button>
               ))}
             </Box>
           </Typography>
 
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <Link to="/login">
-              <Button key="LOGIN" sx={{ color: "#fff" }}>
-                Login
-              </Button>
-            </Link>
+          <Box
+            sx={{
+              display: username != "" ? { xs: "none", sm: "block" } : "none",
+            }}
+          >
+            <Typography variant="p" component="span" sx={{ flexGrow: 1 }}>
+              {localStorage.getItem("name")} {localStorage.getItem("surname")}
+            </Typography>
+            <Button sx={{ color: "#fff" }} onClick={logout}>
+              ออกจากระบบ
+            </Button>
+          </Box>
+          <Box
+            sx={{
+              display: username == "" ? { xs: "none", sm: "block" } : "none",
+            }}
+            component={Link}
+            to="/login"
+          >
+            <Button sx={{ color: "#fff" }}>เข้าสู่ระบบ</Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -145,13 +214,5 @@ function Navbar(props) {
     </Box>
   );
 }
-
-Navbar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
 export default Navbar;
