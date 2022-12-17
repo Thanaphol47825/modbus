@@ -47,6 +47,12 @@ function Navbar(props) {
           { title: "ประวัติการจอง", url: "/history" },
           { title: "แอดมิน", url: "/admin/dashboard" },
         ]);
+      } else {
+        setNavItems([
+          { title: "หน้าแรก", url: "/" },
+          { title: "จองรอบ", url: "/booking" },
+          { title: "ประวัติการจอง", url: "/history" },
+        ]);
       }
     }
   }, []);

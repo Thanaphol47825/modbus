@@ -54,11 +54,11 @@ const Register = () => {
   const handleSubmit = (values) => {
     RegisterService(
       values.username,
+      values.password,
       values.firstName,
       values.lastName,
       values.email,
-      values.mobile,
-      values.password
+      values.mobile
     )
       .then((res) => {
         if (res.data.status) {
@@ -67,14 +67,15 @@ const Register = () => {
           localStorage.setItem("name", res.data.name);
           localStorage.setItem("surname", res.data.surname);
           localStorage.setItem("username", res.data.username);
+          localStorage.setItem("role", res.data.role);
           MySwal.fire({
             icon: "success",
             title: "สมัครสมาชิกสำเร็จ",
             text: "",
           }).then(() => {
-            navigate("/")
+            location.href = "/";
           });
-        } else{
+        } else {
           MySwal.fire({
             icon: "error",
             title: "สมัครสมาชิกไม่สำเร็จ",
@@ -90,6 +91,11 @@ const Register = () => {
         });
       });
   };
+  React.useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">
