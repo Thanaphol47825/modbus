@@ -13,7 +13,7 @@ import {
   InputLabel,
   MenuItem,
 } from "@mui/material";
-
+import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import { AddBusService, GetBusTypeService } from "../../services/userService";
 
 import { object, string, boolean, number } from "yup";
@@ -33,7 +33,11 @@ const AddBus = () => {
     <Container>
       <CssBaseline />
       <Card>
-        <CardHeader title="เพิ่มรถ" />
+        <CardHeader
+          title="เพิ่มรถ"
+          titleTypographyProps={{ variant: "h5" }}
+          avatar={<DirectionsBusIcon />}
+        />
         <CardContent>
           <Formik
             initialValues={{

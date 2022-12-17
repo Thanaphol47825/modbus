@@ -103,3 +103,11 @@ export async function ChangePermission(user_id, role) {
     { headers: header }
   );
 }
+
+export async function GetAllRoundService() {
+  return axios.get(API_URL + "get/admin/round", { headers: header });
+}
+
+export async function GetRoundBookingService(round_id){
+  return axios.get(API_URL + "get/admin/round/booking/" + round_id, { headers: header });
+}

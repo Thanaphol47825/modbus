@@ -205,6 +205,7 @@ export const Dashboard = () => {
           <Card>
             <CardHeader
               title="ยอดผู้เดินทางวันนี้"
+              titleTypographyProps={{ variant: "h6" }}
               avatar={<NaturePeopleIcon />}
             />
             <CardContent>
@@ -218,6 +219,7 @@ export const Dashboard = () => {
           <Card>
             <CardHeader
               title="จำนวนรอบการเดินรถในวันนี้"
+              titleTypographyProps={{ variant: "h6" }}
               avatar={<DirectionsBusIcon />}
             />
             <CardContent>
@@ -231,6 +233,7 @@ export const Dashboard = () => {
           <Card>
             <CardHeader
               title="ยอดผู้เดินทางในสัปดาห์นี้"
+              titleTypographyProps={{ variant: "h6" }}
               avatar={<DateRangeIcon />}
             />
             <CardContent>

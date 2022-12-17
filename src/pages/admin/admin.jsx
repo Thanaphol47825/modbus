@@ -37,12 +37,12 @@ const Admin = () => {
           <Grid item xs={6} lg={3}>
             <Button
               component={Link}
-              to="/admin/add/route"
+              to="/admin/route"
               variant="contained"
               color="success"
               fullWidth
             >
-              Add route
+              Manage route
             </Button>
           </Grid>
           <Grid item xs={6} lg={3}>
@@ -73,7 +73,7 @@ const Admin = () => {
 
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/add/route" element={<AddPath />} />
+        <Route path="/route" element={<AddPath />} />
         <Route path="/add/bus" element={<AddBus />} />
         <Route path="/manage/staff" element={<StaffManage />} />
         <Route path="/*" element={<Navigate to="/admin/dashboard" />} />

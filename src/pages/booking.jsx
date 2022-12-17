@@ -150,7 +150,7 @@ const Booking = () => {
         {(activeStep === 0 && (
           <Box>
             <Card>
-              <CardHeader title="SelectRoute" avatar={<BusAlertIcon />} />
+              <CardHeader title="เลือกเส้นทาง" avatar={<BusAlertIcon />} />
               <CardContent>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
