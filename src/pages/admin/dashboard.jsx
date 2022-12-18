@@ -61,7 +61,7 @@ export const color = [
 ];
 
 export const Dashboard = () => {
-  const data1 = {
+  const datatemp1 = {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
     datasets: [
       {
@@ -86,7 +86,7 @@ export const Dashboard = () => {
       },
     ],
   };
-  const data2 = {
+  const datatemp2 = {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
     datasets: [
       {
@@ -114,9 +114,10 @@ export const Dashboard = () => {
   const [todaybooking, setTodaybooking] = React.useState(0);
   const [todayround, setTodayround] = React.useState(0);
   const [lastweekbooking, setLastweekbooking] = React.useState(0);
-  const [dataset, setDataset] = React.useState(data1);
-  const [dataset2, setDataset2] = React.useState(data2);
-
+  const [dataset, setDataset] = React.useState(datatemp1);
+  const [dataset2, setDataset2] = React.useState(datatemp2);
+  const chart1 = React.createRef();
+  const chart2 = React.createRef();
   useEffect(() => {
     GetAdminDashboardService()
       .then((res) => {
@@ -124,9 +125,9 @@ export const Dashboard = () => {
         setTodayround(res.data.round);
         setLastweekbooking(res.data.lastweek_booking);
       })
-      .catch((err) => {
-      });
-
+      .catch((err) => {});
+  }, []);
+  useEffect(() => {
     GetAdminDashboardGraphService()
       .then((res) => {
         // use this data to set the graph
@@ -152,28 +153,26 @@ export const Dashboard = () => {
             },
           ],
         };
+
         let today_graph = res.data.today;
         let lastweek_graph = res.data.lastweek;
-
+        // use today_graph to set the graph by for loop
         today_graph.map((item, index) => {
           data.labels.push(item.round_name);
           data.datasets[0].data.push(item.booking_count);
-          data.datasets[0].backgroundColor.push(color[index].bg);
-          data.datasets[0].borderColor.push(color[index].border);
+          data.datasets[0].backgroundColor.push(color[index % 9].bg);
+          data.datasets[0].borderColor.push(color[index % 9].border);
         });
-
         lastweek_graph.map((item, index) => {
           data2.labels.push(item.date);
           data2.datasets[0].data.push(item.booking_count);
-          data2.datasets[0].backgroundColor.push(color[index].bg);
-          data2.datasets[0].borderColor.push(color[index].border);
+          data2.datasets[0].backgroundColor.push(color[index % 9].bg);
+          data2.datasets[0].borderColor.push(color[index % 9].border);
         });
-
         setDataset(data);
         setDataset2(data2);
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   }, []);
 
   return (
@@ -247,7 +246,7 @@ export const Dashboard = () => {
           <Card>
             <CardHeader title="ผู้เดินทางในแต่ละรอบของวันนี้" />
             <CardContent>
-              <Pie data={dataset} />
+              <Pie data={dataset} redraw={true} ref={chart1} />
             </CardContent>
           </Card>
         </Grid>
@@ -255,7 +254,7 @@ export const Dashboard = () => {
           <Card>
             <CardHeader title="ผู้เดินทางในแต่ละวันของสัปดาห์" />
             <CardContent>
-              <Pie data={dataset2} />
+              <Pie data={dataset2} redraw={true} ref={chart2} />
             </CardContent>
           </Card>
         </Grid>
@@ -265,3 +264,11 @@ export const Dashboard = () => {
 };
 
 export default Dashboard;
+
+// Copilot help me update Pie chart data
+// Using react-chartjs-2
+// Data is from API
+// I want to update data On Load
+// But it's not working
+// I don't know why
+// Please help me
