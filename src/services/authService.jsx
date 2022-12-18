@@ -1,8 +1,7 @@
 import axios from "axios";
+require("dotenv").config();
 
-const API_URL = "https://api.modbus.sleepyboi.space/api/auth/";
-
-// const API_URL = "http://localhost:8080/api/auth/";
+const API_URL = process.env.API_URL;
 
 const headers = {
   "Content-Type": "application/json",
@@ -33,4 +32,3 @@ export async function RegisterService(
     mobile: mobile,
   });
 }
-

@@ -1,6 +1,7 @@
 import axios from "axios";
+require("dotenv").config();
 
-const API_URL = "https://api.modbus.sleepyboi.space/api/";
+const API_URL = process.env.API_URL;
 
 // const API_URL = "http://localhost:8080/api/";
 
@@ -108,6 +109,8 @@ export async function GetAllRoundService() {
   return axios.get(API_URL + "get/admin/round", { headers: header });
 }
 
-export async function GetRoundBookingService(round_id){
-  return axios.get(API_URL + "get/admin/round/booking/" + round_id, { headers: header });
+export async function GetRoundBookingService(round_id) {
+  return axios.get(API_URL + "get/admin/round/booking/" + round_id, {
+    headers: header,
+  });
 }
