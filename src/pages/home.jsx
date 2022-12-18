@@ -19,6 +19,7 @@ import { GetTodayRoundService } from "../services/userService";
 function Home() {
   const [allround, setAllround] = React.useState([]);
   React.useEffect(() => {
+    // console.log .env
     GetTodayRoundService().then((result) => {
       setAllround(result.data);
     });
